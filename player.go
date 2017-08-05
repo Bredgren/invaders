@@ -74,6 +74,7 @@ func (b *PlayerBullet) init() {
 	b.Img.Fill(color.White)
 	b.Rect.SetSize(w, h)
 	b.Speed = PlayerBulletSpeed
+	b.hide()
 }
 
 func (b *PlayerBullet) update(dt time.Duration) {
