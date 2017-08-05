@@ -22,6 +22,7 @@ var (
 func update(screen *ebiten.Image) error {
 	pos := geo.VecXY(Width/2, Height/2)
 	opts := &ebiten.DrawImageOptions{}
+	opts.ColorM.Scale(0.0, 1.0, 0.0, 1.0)
 	opts.GeoM.Reset()
 	opts.GeoM.Translate(pos.XY())
 	screen.DrawImage(playerImg, opts)
