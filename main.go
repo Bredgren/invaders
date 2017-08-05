@@ -21,7 +21,8 @@ var (
 )
 
 var (
-	player Player
+	player       Player
+	playerBullet PlayerBullet
 )
 
 func togglFullscreen() {
@@ -44,14 +45,16 @@ func update(screen *ebiten.Image) error {
 	} else {
 		timeScale = 1.0
 	}
-	dt := time.Duration(float64(lastUpdate.Sub(now).Nanoseconds())*timeScale) * time.Nanosecond
+	dt := time.Duration(float64(now.Sub(lastUpdate).Nanoseconds())*timeScale) * time.Nanosecond
 	lastUpdate = now
 
 	togglFullscreen()
 
-	player.move(dt)
+	player.update(dt)
+	playerBullet.update(dt)
 
 	player.draw(screen)
+	playerBullet.draw(screen)
 
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %0.2f\nTime: %0.2f",
 		ebiten.CurrentFPS(), timeScale))
@@ -65,6 +68,7 @@ var (
 
 func main() {
 	player.init()
+	playerBullet.init()
 
 	if err := ebiten.Run(update, Width, Height, 2, "Invaders"); err != nil {
 		log.Fatal(err)

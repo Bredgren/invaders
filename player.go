@@ -1,6 +1,7 @@
 package main
 
 import (
+	"image/color"
 	"log"
 	"time"
 
@@ -10,8 +11,9 @@ import (
 )
 
 const (
-	PlayerSpeed = 75
-	PlayerY     = 20
+	PlayerSpeed       = 80
+	PlayerY           = 20
+	PlayerBulletSpeed = 160
 )
 
 type Player struct {
@@ -38,13 +40,13 @@ func (p *Player) init() {
 	// p.Rect.SetLeft(math.Trunc(p.Rect.Left()))
 }
 
-func (p *Player) move(dt time.Duration) {
+func (p *Player) update(dt time.Duration) {
 	vel := 0.0
 	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
-		vel = PlayerSpeed
+		vel = -PlayerSpeed
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyRight) {
-		vel = -PlayerSpeed
+		vel = PlayerSpeed
 	}
 	newX := p.Rect.Left() + vel*dt.Seconds()
 	p.Rect.SetLeft(newX)
@@ -56,4 +58,42 @@ func (p *Player) draw(dst *ebiten.Image) {
 	p.Opts.GeoM.Reset()
 	p.Opts.GeoM.Translate(p.Rect.TopLeft())
 	dst.DrawImage(p.Img, p.Opts)
+}
+
+type PlayerBullet struct {
+	Rect  geo.Rect
+	Speed float64
+	Img   *ebiten.Image
+	Opts  *ebiten.DrawImageOptions
+}
+
+func (b *PlayerBullet) init() {
+	const w, h = 1, 4
+	b.Img, _ = ebiten.NewImage(w, h, ebiten.FilterNearest)
+	b.Opts = &ebiten.DrawImageOptions{}
+	b.Img.Fill(color.White)
+	b.Rect.SetSize(w, h)
+	b.Speed = PlayerBulletSpeed
+}
+
+func (b *PlayerBullet) update(dt time.Duration) {
+	if ebiten.IsKeyPressed(ebiten.KeyUp) && !b.isGoing() {
+		b.Rect.SetBottomMid(player.Rect.TopMid())
+	}
+	if !b.isGoing() {
+		b.Rect.SetTopLeft(0, -100) // arbitraty y < 0
+		return
+	}
+
+	b.Rect.SetTop(b.Rect.Top() - b.Speed*dt.Seconds())
+}
+
+func (b *PlayerBullet) draw(dst *ebiten.Image) {
+	b.Opts.GeoM.Reset()
+	b.Opts.GeoM.Translate(b.Rect.TopLeft())
+	dst.DrawImage(b.Img, b.Opts)
+}
+
+func (b *PlayerBullet) isGoing() bool {
+	return b.Rect.Y > 0
 }
