@@ -81,7 +81,7 @@ func (b *PlayerBullet) update(dt time.Duration) {
 		b.Rect.SetBottomMid(player.Rect.TopMid())
 	}
 	if !b.isGoing() {
-		b.Rect.SetTopLeft(0, -100) // arbitraty y < 0
+		b.hide()
 		return
 	}
 
@@ -102,6 +102,9 @@ func (b *PlayerBullet) isGoing() bool {
 }
 
 func (b *PlayerBullet) hitSomething() {
-	// "destroy" the bullet by moving it off screen
+	b.hide()
+}
+
+func (b *PlayerBullet) hide() {
 	b.Rect.SetTopLeft(0, -100) // arbitraty y < 0
 }
