@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"math"
 	"time"
 
 	"github.com/Bredgren/geo"
@@ -32,9 +31,11 @@ func (p *Player) init() {
 	p.Opts.ColorM.Scale(0.0, 1.0, 0.0, 1.0)
 	size := geo.VecXYi(p.Img.Size())
 	p.Rect = geo.RectWH(size.XY())
-	p.Rect.SetMid(Width*0.25, Height-PlayerY)
+	yOffset := (size.Y + 4) * 2 // enough room for 2 player imgs + padding
+	p.Rect.SetMid(Width*0.25, Height-yOffset)
 	// The player image doesn't display quite right initially unless integer aligned
-	p.Rect.SetLeft(math.Trunc(p.Rect.Left()))
+	// This is not needed after changing screen width to 255
+	// p.Rect.SetLeft(math.Trunc(p.Rect.Left()))
 }
 
 func (p *Player) move(dt time.Duration) {
