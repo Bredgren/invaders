@@ -24,6 +24,7 @@ var (
 	player       Player
 	playerBullet PlayerBullet
 	shelters     = [4]Shelter{}
+	mystery      Mystery
 )
 
 func togglFullscreen() {
@@ -55,6 +56,7 @@ func update(screen *ebiten.Image) error {
 
 	togglFullscreen()
 
+	mystery.update(dt)
 	player.update(dt)
 	playerBullet.update(dt)
 
@@ -66,6 +68,7 @@ func update(screen *ebiten.Image) error {
 		shelter.draw(screen)
 	}
 
+	mystery.draw(screen)
 	player.draw(screen)
 	playerBullet.draw(screen)
 
@@ -82,6 +85,7 @@ var (
 func reset() {
 	player.init()
 	playerBullet.init()
+	mystery.init()
 
 	for i := 0; i < len(shelters); i++ {
 		shelters[i].init(i)
