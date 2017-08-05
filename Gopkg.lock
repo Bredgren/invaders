@@ -35,7 +35,7 @@
   branch = "master"
   name = "github.com/hajimehoshi/ebiten"
   packages = [".","ebitenutil","ebitenutil/internal/assets","internal","internal/affine","internal/clock","internal/endian","internal/graphics","internal/jni","internal/loop","internal/opengl","internal/restorable","internal/sync","internal/ui","internal/web"]
-  revision = "f0d47312c40d23657c7684293d054d2b45d69201"
+  revision = "94843fbe73d4cdce46d25769b4c6def9572da8e8"
 
 [[projects]]
   branch = "master"

@@ -26,7 +26,7 @@ var (
 )
 
 type Player struct {
-	Pos   float64
+	Rect  geo.Rect
 	Speed float64
 	Img   *ebiten.Image
 	Opts  *ebiten.DrawImageOptions
@@ -40,7 +40,9 @@ func (p *Player) init() {
 	p.Img = img
 	p.Opts = &ebiten.DrawImageOptions{}
 	p.Opts.ColorM.Scale(0.0, 1.0, 0.0, 1.0)
-	p.Pos = Width / 2
+	size := geo.VecXYi(p.Img.Size())
+	p.Rect = geo.RectWH(size.XY())
+	p.Rect.SetMid(Width*0.25, Height-PlayerY)
 }
 
 func (p *Player) move(dt time.Duration) {
@@ -51,16 +53,15 @@ func (p *Player) move(dt time.Duration) {
 	if ebiten.IsKeyPressed(ebiten.KeyRight) {
 		vel = -PlayerSpeed
 	}
-	p.Pos += vel * dt.Seconds()
-
+	newX := p.Rect.Left() + vel*dt.Seconds()
+	p.Rect.SetLeft(newX)
 	// Keep on screen
-	w, _ := p.Img.Size()
-	p.Pos = geo.Clamp(p.Pos, 0, float64(Width-w))
+	p.Rect.Clamp(geo.RectWH(Width, Height))
 }
 
 func (p *Player) draw(dst *ebiten.Image) {
 	p.Opts.GeoM.Reset()
-	p.Opts.GeoM.Translate(p.Pos, Height-PlayerY)
+	p.Opts.GeoM.Translate(p.Rect.TopLeft())
 	dst.DrawImage(p.Img, p.Opts)
 }
 
