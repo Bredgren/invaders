@@ -16,12 +16,24 @@ const (
 )
 
 var (
-	timeScale = 1.0
+	timeScale           = 1.0
+	canChangeFullscreen = true
 )
 
 var (
 	player Player
 )
+
+func togglFullscreen() {
+	if ebiten.IsKeyPressed(ebiten.KeyF) {
+		if canChangeFullscreen {
+			ebiten.SetFullscreen(!ebiten.IsFullscreen())
+			canChangeFullscreen = false
+		}
+	} else {
+		canChangeFullscreen = true
+	}
+}
 
 func update(screen *ebiten.Image) error {
 	now := time.Now()
@@ -34,6 +46,8 @@ func update(screen *ebiten.Image) error {
 	}
 	dt := time.Duration(float64(lastUpdate.Sub(now).Nanoseconds())*timeScale) * time.Nanosecond
 	lastUpdate = now
+
+	togglFullscreen()
 
 	player.move(dt)
 
