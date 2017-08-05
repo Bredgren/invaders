@@ -21,6 +21,10 @@ const (
 	PlayerY     = 20
 )
 
+var (
+	timeScale = 1.0
+)
+
 type Player struct {
 	Pos   float64
 	Speed float64
@@ -66,13 +70,21 @@ var (
 
 func update(screen *ebiten.Image) error {
 	now := time.Now()
-	dt := lastUpdate.Sub(now)
+	if ebiten.IsKeyPressed(ebiten.KeyZ) {
+		timeScale = 0.5
+	} else if ebiten.IsKeyPressed(ebiten.KeyX) {
+		timeScale = 2.0
+	} else {
+		timeScale = 1.0
+	}
+	dt := time.Duration(float64(lastUpdate.Sub(now).Nanoseconds())*timeScale) * time.Nanosecond
 	lastUpdate = now
 
 	player.move(dt)
 
 	player.draw(screen)
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %0.2f", ebiten.CurrentFPS()))
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %0.2f\nTime: %0.2f",
+		ebiten.CurrentFPS(), timeScale))
 	return nil
 }
 
