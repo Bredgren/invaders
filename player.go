@@ -89,6 +89,9 @@ func (b *PlayerBullet) update(dt time.Duration) {
 }
 
 func (b *PlayerBullet) draw(dst *ebiten.Image) {
+	if !b.isGoing() {
+		return
+	}
 	b.Opts.GeoM.Reset()
 	b.Opts.GeoM.Translate(b.Rect.TopLeft())
 	dst.DrawImage(b.Img, b.Opts)
@@ -96,4 +99,9 @@ func (b *PlayerBullet) draw(dst *ebiten.Image) {
 
 func (b *PlayerBullet) isGoing() bool {
 	return b.Rect.Y > 0
+}
+
+func (b *PlayerBullet) hitSomething() {
+	// "destroy" the bullet by moving it off screen
+	b.Rect.SetTopLeft(0, -100) // arbitraty y < 0
 }

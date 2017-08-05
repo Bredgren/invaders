@@ -2,6 +2,8 @@ package main
 
 import (
 	"image/color"
+	"math/rand"
+	"sort"
 
 	"github.com/Bredgren/geo"
 	"github.com/hajimehoshi/ebiten"
@@ -64,4 +66,37 @@ func (s *Shelter) draw(dst *ebiten.Image) {
 		s.Opts.GeoM.Translate(subRect.TopLeft())
 		dst.DrawImage(s.Img, s.Opts)
 	}
+}
+
+func (s *Shelter) collidePlayerBullet(b *PlayerBullet) {
+	if !s.Rect.CollideRect(b.Rect) {
+		return
+	}
+
+	if _, collide := b.Rect.CollideRectList(s.subRects); !collide {
+		return
+	}
+
+	explosionArea := b.Rect.Inflated(3, 3)
+
+	hit := explosionArea.CollideRectListAll(s.subRects)
+	// Remove 5/8 of the rects in the explosion radius
+	countToRemove := len(hit) * 5 / 8
+	if countToRemove < 2 {
+		countToRemove = len(hit)
+	}
+	// "shuffle" the hit slice and pull out countToRemove indices from it
+	order := rand.Perm(len(hit))
+	toRemove := make([]int, countToRemove)
+	for i := 0; i < countToRemove; i++ {
+		toRemove[i] = hit[order[i]]
+	}
+
+	// Remove the items from s.subRects, backwards so that the indicies are correct
+	sort.Sort(sort.Reverse(sort.IntSlice(toRemove)))
+	for _, iToRemove := range toRemove {
+		s.subRects = append(s.subRects[:iToRemove], s.subRects[iToRemove+1:]...)
+	}
+
+	b.hitSomething()
 }

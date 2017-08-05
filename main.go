@@ -55,6 +55,10 @@ func update(screen *ebiten.Image) error {
 	playerBullet.update(dt)
 
 	for _, shelter := range shelters {
+		shelter.collidePlayerBullet(&playerBullet)
+	}
+
+	for _, shelter := range shelters {
 		shelter.draw(screen)
 	}
 
