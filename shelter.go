@@ -77,7 +77,7 @@ func (s *Shelter) collidePlayerBullet(b *PlayerBullet) {
 		return
 	}
 
-	explosionArea := b.Rect.Inflated(3, 3)
+	explosionArea := geo.CircleXYR(b.Rect.MidX(), b.Rect.MidY(), 3)
 
 	hit := explosionArea.CollideRectListAll(s.subRects)
 	// Remove 5/8 of the rects in the explosion radius

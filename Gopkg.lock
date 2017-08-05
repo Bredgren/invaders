@@ -2,10 +2,10 @@
 
 
 [[projects]]
+  branch = "master"
   name = "github.com/Bredgren/geo"
   packages = ["."]
-  revision = "08f84fc5ea20fe1a4e2389ec7005980bf94eed84"
-  version = "v1.0.0-beta1"
+  revision = "9465f8c7efa187a8c1ed7390cadfb59564271860"
 
 [[projects]]
   branch = "master"
@@ -34,8 +34,8 @@
 [[projects]]
   branch = "master"
   name = "github.com/hajimehoshi/ebiten"
-  packages = [".","ebitenutil","ebitenutil/internal/assets","internal","internal/affine","internal/clock","internal/endian","internal/graphics","internal/jni","internal/loop","internal/opengl","internal/restorable","internal/sync","internal/ui","internal/web"]
-  revision = "94843fbe73d4cdce46d25769b4c6def9572da8e8"
+  packages = [".","ebitenutil","ebitenutil/internal/assets","internal","internal/affine","internal/clock","internal/endian","internal/graphics","internal/jni","internal/opengl","internal/restorable","internal/sync","internal/ui","internal/web"]
+  revision = "14737df60f30ff085a82a56a6c3388250e4523ff"
 
 [[projects]]
   branch = "master"
