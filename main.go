@@ -23,6 +23,7 @@ var (
 var (
 	player       Player
 	playerBullet PlayerBullet
+	shelters     = [4]*Shelter{}
 )
 
 func togglFullscreen() {
@@ -53,6 +54,10 @@ func update(screen *ebiten.Image) error {
 	player.update(dt)
 	playerBullet.update(dt)
 
+	for _, shelter := range shelters {
+		shelter.draw(screen)
+	}
+
 	player.draw(screen)
 	playerBullet.draw(screen)
 
@@ -69,6 +74,10 @@ var (
 func main() {
 	player.init()
 	playerBullet.init()
+
+	for i := 0; i < len(shelters); i++ {
+		shelters[i] = NewShelter(i)
+	}
 
 	if err := ebiten.Run(update, Width, Height, 2, "Invaders"); err != nil {
 		log.Fatal(err)

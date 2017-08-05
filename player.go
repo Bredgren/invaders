@@ -35,7 +35,7 @@ func (p *Player) init() {
 	size := geo.VecXYi(p.Img.Size())
 	p.Rect = geo.RectWH(size.XY())
 	yOffset := (size.Y + 4) * 2 // enough room for 2 player imgs + padding
-	p.Rect.SetMid(Width*0.25, Height-yOffset)
+	p.Rect.SetMid(Width*ShelterX[0], Height-yOffset)
 	// The player image doesn't display quite right initially unless left edge is integer aligned
 	p.Rect.SetLeft(math.Trunc(p.Rect.Left()))
 }
