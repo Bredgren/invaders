@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	MysterySpeed = 60
+	MysterySpeed = 50
 	MysteryY     = 40
 )
 

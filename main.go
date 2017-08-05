@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"image/color"
 	_ "image/png"
 	"log"
 	"time"
@@ -18,6 +19,7 @@ const (
 var (
 	timeScale           = 1.0
 	canChangeFullscreen = true
+	floor               *ebiten.Image
 )
 
 var (
@@ -37,6 +39,10 @@ func togglFullscreen() {
 		canChangeFullscreen = true
 	}
 }
+
+var (
+	lastUpdate time.Time
+)
 
 func update(screen *ebiten.Image) error {
 	now := time.Now()
@@ -72,15 +78,19 @@ func update(screen *ebiten.Image) error {
 	player.draw(screen)
 	playerBullet.draw(screen)
 
+	drawFloor(screen)
+
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %0.2f\nTime: %0.2f",
 		ebiten.CurrentFPS(), timeScale))
 
 	return nil
 }
 
-var (
-	lastUpdate time.Time
-)
+func drawFloor(dst *ebiten.Image) {
+	opts := ebiten.DrawImageOptions{}
+	opts.GeoM.Translate(0, Height-(player.Rect.H+12))
+	dst.DrawImage(floor, &opts)
+}
 
 func reset() {
 	player.init()
@@ -94,6 +104,9 @@ func reset() {
 
 func main() {
 	reset()
+
+	floor, _ = ebiten.NewImage(Width, 2, ebiten.FilterNearest)
+	floor.Fill(color.NRGBA{0x00, 0xff, 0x00, 0xff})
 
 	if err := ebiten.Run(update, Width, Height, 2, "Invaders"); err != nil {
 		log.Fatal(err)

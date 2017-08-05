@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	PlayerSpeed       = 80
+	PlayerSpeed       = 100
 	PlayerY           = 20
 	PlayerBulletSpeed = 160
 )
@@ -33,7 +33,7 @@ func (p *Player) init() {
 	p.Opts.ColorM.Scale(0.0, 1.0, 0.0, 1.0)
 	size := geo.VecXYi(p.Img.Size())
 	p.Rect = geo.RectWH(size.XY())
-	yOffset := (size.Y + 4) * 2 // enough room for 2 player imgs + padding
+	yOffset := (size.Y + 10) * 2 // enough room for 2 player imgs + padding
 	p.Rect.SetMid(Width*ShelterX[0], Height-yOffset)
 	// The player image doesn't display quite right initially unless left edge is integer aligned
 	p.Rect.SetLeft(math.Trunc(p.Rect.Left()))
