@@ -3,6 +3,7 @@ package main
 import (
 	"image/color"
 	"log"
+	"math"
 	"time"
 
 	"github.com/Bredgren/geo"
@@ -35,9 +36,8 @@ func (p *Player) init() {
 	p.Rect = geo.RectWH(size.XY())
 	yOffset := (size.Y + 4) * 2 // enough room for 2 player imgs + padding
 	p.Rect.SetMid(Width*0.25, Height-yOffset)
-	// The player image doesn't display quite right initially unless integer aligned
-	// This is not needed after changing screen width to 255
-	// p.Rect.SetLeft(math.Trunc(p.Rect.Left()))
+	// The player image doesn't display quite right initially unless left edge is integer aligned
+	p.Rect.SetLeft(math.Trunc(p.Rect.Left()))
 }
 
 func (p *Player) update(dt time.Duration) {

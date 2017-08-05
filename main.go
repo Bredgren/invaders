@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	Width  = 255
-	Height = 255
+	Width  = 256
+	Height = 256
 )
 
 var (
