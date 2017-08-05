@@ -18,10 +18,9 @@ const (
 )
 
 type Player struct {
-	Rect  geo.Rect
-	Speed float64
-	Img   *ebiten.Image
-	Opts  *ebiten.DrawImageOptions
+	Rect geo.Rect
+	Img  *ebiten.Image
+	Opts *ebiten.DrawImageOptions
 }
 
 func (p *Player) init() {
