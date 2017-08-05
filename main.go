@@ -23,7 +23,7 @@ var (
 var (
 	player       Player
 	playerBullet PlayerBullet
-	shelters     = [4]*Shelter{}
+	shelters     = [4]Shelter{}
 )
 
 func togglFullscreen() {
@@ -48,6 +48,10 @@ func update(screen *ebiten.Image) error {
 	}
 	dt := time.Duration(float64(now.Sub(lastUpdate).Nanoseconds())*timeScale) * time.Nanosecond
 	lastUpdate = now
+
+	if ebiten.IsKeyPressed(ebiten.KeyR) {
+		reset()
+	}
 
 	togglFullscreen()
 
@@ -75,13 +79,17 @@ var (
 	lastUpdate time.Time
 )
 
-func main() {
+func reset() {
 	player.init()
 	playerBullet.init()
 
 	for i := 0; i < len(shelters); i++ {
-		shelters[i] = NewShelter(i)
+		shelters[i].init(i)
 	}
+}
+
+func main() {
+	reset()
 
 	if err := ebiten.Run(update, Width, Height, 2, "Invaders"); err != nil {
 		log.Fatal(err)

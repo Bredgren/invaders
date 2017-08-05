@@ -26,19 +26,15 @@ type Shelter struct {
 	Opts     *ebiten.DrawImageOptions
 }
 
-func NewShelter(num int) *Shelter {
-	img, _ := ebiten.NewImage(1, 1, ebiten.FilterNearest)
-	img.Fill(color.NRGBA{0x00, 0xff, 0x00, 0xff})
+func (s *Shelter) init(num int) {
+	s.Img, _ = ebiten.NewImage(1, 1, ebiten.FilterNearest)
+	s.Img.Fill(color.NRGBA{0x00, 0xff, 0x00, 0xff})
+	s.Opts = &ebiten.DrawImageOptions{}
 
-	rect := geo.RectWH(ShelterW, ShelterH)
-	rect.SetBottomMid(ShelterX[num]*Width, ShelterBottomY)
+	s.Rect = geo.RectWH(ShelterW, ShelterH)
+	s.Rect.SetBottomMid(ShelterX[num]*Width, ShelterBottomY)
 
-	return &Shelter{
-		Rect:     rect,
-		subRects: shelterPix(rect),
-		Img:      img,
-		Opts:     &ebiten.DrawImageOptions{},
-	}
+	s.subRects = shelterPix(s.Rect)
 }
 
 func shelterPix(r geo.Rect) []geo.Rect {
