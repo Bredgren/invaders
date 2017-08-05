@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/Bredgren/geo"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
@@ -39,12 +40,18 @@ func (p *Player) init() {
 }
 
 func (p *Player) move(dt time.Duration) {
+	vel := 0.0
 	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
-		p.Pos += PlayerSpeed * dt.Seconds()
+		vel = PlayerSpeed
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyRight) {
-		p.Pos -= PlayerSpeed * dt.Seconds()
+		vel = -PlayerSpeed
 	}
+	p.Pos += vel * dt.Seconds()
+
+	// Keep on screen
+	w, _ := p.Img.Size()
+	p.Pos = geo.Clamp(p.Pos, 0, float64(Width-w))
 }
 
 func (p *Player) draw(dst *ebiten.Image) {
