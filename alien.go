@@ -8,15 +8,15 @@ import (
 )
 
 var (
-	tempo = 1 * time.Second
+	// alien actions per second
+	tempo = 1.0
 )
 
 type Aliens struct {
 	Bounds   geo.Rect
 	AlienImg [3][2]*ebiten.Image
 	Opts     *ebiten.DrawImageOptions
-	img      int
-	counter  time.Duration
+	counter  float64
 }
 
 func (a *Aliens) init() {
@@ -28,25 +28,20 @@ func (a *Aliens) init() {
 	a.AlienImg[2][1] = openImg("img/alien3_01.png")
 	a.Opts = &ebiten.DrawImageOptions{}
 	a.Bounds = geo.RectXYWH(50, 100, 100, 50)
-	a.img = 0
-	a.counter = tempo
 }
 
 func (a *Aliens) update(dt time.Duration) {
-	a.counter -= dt
-	if a.counter <= 0 {
-		a.counter = tempo
-		a.img = (a.img + 1) % 2
-	}
+	a.counter += dt.Seconds() * tempo
 }
 
 func (a *Aliens) draw(dst *ebiten.Image) {
 	x, y := a.Bounds.TopLeft()
+	i := int(a.counter) % 2
 	a.Opts.GeoM.Reset()
 	a.Opts.GeoM.Translate(x, y)
-	dst.DrawImage(a.AlienImg[0][a.img], a.Opts)
+	dst.DrawImage(a.AlienImg[0][i], a.Opts)
 	a.Opts.GeoM.Translate(20, 0)
-	dst.DrawImage(a.AlienImg[1][a.img], a.Opts)
+	dst.DrawImage(a.AlienImg[1][i], a.Opts)
 	a.Opts.GeoM.Translate(20, 0)
-	dst.DrawImage(a.AlienImg[2][a.img], a.Opts)
+	dst.DrawImage(a.AlienImg[2][i], a.Opts)
 }
