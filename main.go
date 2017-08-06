@@ -62,18 +62,21 @@ func update(screen *ebiten.Image) error {
 
 	togglFullscreen()
 
+	// Update things
 	mystery.update(dt)
 	player.update(dt)
 	playerBullet.update(dt)
 
+	// Check collisons
+	mystery.collidePlayerBullet(&playerBullet)
 	for _, shelter := range shelters {
 		shelter.collidePlayerBullet(&playerBullet)
 	}
 
+	// Draw
 	for _, shelter := range shelters {
 		shelter.draw(screen)
 	}
-
 	mystery.draw(screen)
 	player.draw(screen)
 	playerBullet.draw(screen)
@@ -103,6 +106,7 @@ func reset() {
 }
 
 func main() {
+	lastUpdate = time.Now()
 	reset()
 
 	floor, _ = ebiten.NewImage(Width, 2, ebiten.FilterNearest)
