@@ -27,6 +27,7 @@ var (
 	playerBullet PlayerBullet
 	shelters     = [4]Shelter{}
 	mystery      Mystery
+	aliens       Aliens
 )
 
 func togglFullscreen() {
@@ -71,6 +72,7 @@ func update(screen *ebiten.Image) error {
 	mystery.update(dt)
 	player.update(dt)
 	playerBullet.update(dt)
+	aliens.update(dt)
 
 	// Check collisons
 	mystery.collidePlayerBullet(&playerBullet)
@@ -84,6 +86,7 @@ func update(screen *ebiten.Image) error {
 	}
 	mystery.draw(screen)
 	player.draw(screen)
+	aliens.draw(screen)
 	playerBullet.draw(screen)
 
 	drawFloor(screen)
@@ -104,6 +107,7 @@ func reset() {
 	player.init()
 	playerBullet.init()
 	mystery.init()
+	aliens.init()
 
 	for i := 0; i < len(shelters); i++ {
 		shelters[i].init(i)
