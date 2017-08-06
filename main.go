@@ -62,6 +62,11 @@ func update(screen *ebiten.Image) error {
 
 	togglFullscreen()
 
+	if ebiten.IsRunningSlowly() {
+		log.Println("slow")
+		return nil
+	}
+
 	// Update things
 	mystery.update(dt)
 	player.update(dt)
