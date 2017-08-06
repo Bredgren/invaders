@@ -2,13 +2,11 @@ package main
 
 import (
 	"image/color"
-	"log"
 	"math"
 	"time"
 
 	"github.com/Bredgren/geo"
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 const (
@@ -24,11 +22,7 @@ type Player struct {
 }
 
 func (p *Player) init() {
-	img, _, err := ebitenutil.NewImageFromFile("img/player.png", ebiten.FilterNearest)
-	if err != nil {
-		log.Fatal("open player file:", err)
-	}
-	p.Img = img
+	p.Img = openImg("img/player.png")
 	p.Opts = &ebiten.DrawImageOptions{}
 	p.Opts.ColorM.Scale(0.0, 1.0, 0.0, 1.0)
 	size := geo.VecXYi(p.Img.Size())

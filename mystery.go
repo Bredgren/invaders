@@ -1,12 +1,10 @@
 package main
 
 import (
-	"log"
 	"time"
 
 	"github.com/Bredgren/geo"
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 const (
@@ -22,11 +20,7 @@ type Mystery struct {
 }
 
 func (m *Mystery) init() {
-	img, _, err := ebitenutil.NewImageFromFile("img/mystery.png", ebiten.FilterNearest)
-	if err != nil {
-		log.Fatal("open mystery file:", err)
-	}
-	m.Img = img
+	m.Img = openImg("img/mystery.png")
 	m.Opts = &ebiten.DrawImageOptions{}
 	m.Opts.ColorM.Scale(1.0, 0.0, 0.0, 1.0)
 	size := geo.VecXYi(m.Img.Size())
