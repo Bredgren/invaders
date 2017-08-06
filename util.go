@@ -8,7 +8,7 @@ import (
 )
 
 func openImg(name string) *ebiten.Image {
-	img, _, err := ebitenutil.NewImageFromFile("img/mystery.png", ebiten.FilterNearest)
+	img, _, err := ebitenutil.NewImageFromFile(name, ebiten.FilterNearest)
 	if err != nil {
 		log.Fatalf("open %s file: %s\n", name, err)
 	}
