@@ -1,7 +1,6 @@
 package main
 
 import (
-	"image/color"
 	"math"
 	"time"
 
@@ -104,11 +103,11 @@ func (a *Aliens) update(dt time.Duration) {
 
 func (a *Aliens) draw(dst *ebiten.Image) {
 	// Debug rect
-	img, _ := ebiten.NewImage(int(a.Bounds.W), int(a.Bounds.H), ebiten.FilterLinear)
-	img.Fill(color.NRGBA{0xaa, 0xaa, 0xff, 0x44})
-	opts := ebiten.DrawImageOptions{}
-	opts.GeoM.Translate(a.Bounds.TopLeft())
-	dst.DrawImage(img, &opts)
+	// img, _ := ebiten.NewImage(int(a.Bounds.W), int(a.Bounds.H), ebiten.FilterLinear)
+	// img.Fill(color.NRGBA{0xaa, 0xaa, 0xff, 0x44})
+	// opts := ebiten.DrawImageOptions{}
+	// opts.GeoM.Translate(a.Bounds.TopLeft())
+	// dst.DrawImage(img, &opts)
 
 	idx := int(a.counter) % 2
 	for i := range a.Aliens {
