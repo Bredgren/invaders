@@ -9,6 +9,11 @@ import (
 	"github.com/hajimehoshi/ebiten"
 )
 
+const (
+	rows = 5
+	cols = 11
+)
+
 var (
 	// alien actions per second
 	tempo  = 1.0
@@ -24,7 +29,7 @@ type Aliens struct {
 	Bounds   geo.Rect
 	AlienImg [3][2]*ebiten.Image
 	Opts     *ebiten.DrawImageOptions
-	Aliens   [11 * 5]Alien
+	Aliens   [rows * cols]Alien
 	counter  float64
 	tick     int
 	speed    float64
@@ -44,13 +49,13 @@ func (a *Aliens) init() {
 	xSpacing, ySpacing := 16.0, 16.0
 	x, y := a.Bounds.TopLeft()
 
-	for row := 0; row < 5; row++ {
+	for row := 0; row < rows; row++ {
 		kind := alienKindForRow(row)
 		offset := float64(kind)
 		wi, hi := a.AlienImg[kind][0].Size()
 		w, h := float64(wi), float64(hi)
-		for col := 0; col < 11; col++ {
-			a.Aliens[11*row+col] = Alien{
+		for col := 0; col < cols; col++ {
+			a.Aliens[cols*row+col] = Alien{
 				Rect: geo.RectXYWH(x+offset, y, w, h),
 				kind: kind,
 			}
