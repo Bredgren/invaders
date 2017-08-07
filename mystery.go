@@ -12,6 +12,10 @@ const (
 	MysteryY     = 40
 )
 
+var (
+	mystery Mystery
+)
+
 type Mystery struct {
 	Rect       geo.Rect
 	Img        *ebiten.Image

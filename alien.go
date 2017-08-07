@@ -11,7 +11,8 @@ import (
 
 var (
 	// alien actions per second
-	tempo = 1.0
+	tempo  = 1.0
+	aliens Aliens
 )
 
 type Alien struct {

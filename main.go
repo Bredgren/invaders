@@ -22,14 +22,6 @@ var (
 	floor               *ebiten.Image
 )
 
-var (
-	player       Player
-	playerBullet PlayerBullet
-	shelters     = [4]Shelter{}
-	mystery      Mystery
-	aliens       Aliens
-)
-
 func togglFullscreen() {
 	if ebiten.IsKeyPressed(ebiten.KeyF) {
 		if canChangeFullscreen {

@@ -16,6 +16,7 @@ const (
 )
 
 var (
+	shelters = [4]Shelter{}
 	ShelterX = [4]float64{0.2, 0.4, 0.6, 0.8}
 )
 

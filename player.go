@@ -15,6 +15,11 @@ const (
 	PlayerBulletSpeed = 160
 )
 
+var (
+	player       Player
+	playerBullet PlayerBullet
+)
+
 type Player struct {
 	Rect geo.Rect
 	Img  *ebiten.Image
