@@ -60,9 +60,7 @@ func (a *Aliens) init() {
 		y += ySpacing
 	}
 
-	for _, alien := range a.Aliens {
-		a.Bounds.Union(alien.Rect)
-	}
+	a.reCalcBounds()
 }
 
 func alienKindForRow(row int) int {
@@ -86,8 +84,12 @@ func (a *Aliens) update(dt time.Duration) {
 			a.speed *= -1
 		}
 		for i := range a.Aliens {
-			a.Aliens[i].Rect.X += a.speed
-			a.Aliens[i].Rect.Y += y
+			alien := &a.Aliens[i]
+			if alien.kind < 0 {
+				continue
+			}
+			alien.Rect.X += a.speed
+			alien.Rect.Y += y
 		}
 		a.Bounds.X += a.speed
 		a.Bounds.Y += y
@@ -104,9 +106,62 @@ func (a *Aliens) draw(dst *ebiten.Image) {
 	dst.DrawImage(img, &opts)
 
 	idx := int(a.counter) % 2
-	for _, alien := range a.Aliens {
+	for i := range a.Aliens {
+		alien := &a.Aliens[i]
+		if alien.kind < 0 {
+			continue
+		}
 		a.Opts.GeoM.Reset()
 		a.Opts.GeoM.Translate(alien.Rect.TopLeft())
 		dst.DrawImage(a.AlienImg[alien.kind][idx], a.Opts)
+	}
+}
+
+func (a *Aliens) collidePlayerBullet(b *PlayerBullet) {
+	if !a.Bounds.CollideRect(b.Rect) {
+		return
+	}
+
+	for i := range a.Aliens {
+		alien := &a.Aliens[i]
+		if alien.kind < 0 {
+			continue
+		}
+		if alien.Rect.CollideRect(b.Rect) {
+			alien.kind = -1
+			b.hitSomething()
+			a.reCalcBounds()
+			break
+		}
+	}
+}
+
+func (a *Aliens) remaining() int {
+	count := 0
+	for i := range a.Aliens {
+		if a.Aliens[i].kind >= 0 {
+			count++
+		}
+	}
+	return count
+}
+
+func (a *Aliens) reCalcBounds() {
+	if a.remaining() == 0 {
+		return
+	}
+
+	// Find first alien's rect for a starting point, then union with all others
+	a.Bounds.X = -100
+	for i := range a.Aliens {
+		alien := &a.Aliens[i]
+		if alien.kind < 0 {
+			continue
+		}
+		if a.Bounds.X == -100 {
+			a.Bounds = alien.Rect
+		} else {
+			a.Bounds.Union(alien.Rect)
+		}
 	}
 }

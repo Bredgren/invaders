@@ -71,6 +71,7 @@ func update(screen *ebiten.Image) error {
 	for _, shelter := range shelters {
 		shelter.collidePlayerBullet(&playerBullet)
 	}
+	aliens.collidePlayerBullet(&playerBullet)
 
 	// Draw
 	for _, shelter := range shelters {
