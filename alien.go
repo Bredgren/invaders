@@ -42,8 +42,11 @@ func (a *Aliens) init() {
 	a.AlienImg[2][0] = openImg("img/alien3_00.png")
 	a.AlienImg[2][1] = openImg("img/alien3_01.png")
 	a.Opts = &ebiten.DrawImageOptions{}
-	a.Bounds = geo.RectXYWH(40, 64, 0, 0)
 	a.speed = 2
+}
+
+func (a *Aliens) resetLevel(level int) {
+	a.Bounds = geo.RectXYWH(40, 64, 0, 0)
 
 	xSpacing, ySpacing := 16.0, 16.0
 	x, y := a.Bounds.TopLeft()

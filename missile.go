@@ -27,6 +27,9 @@ func (m *Missiles) init() {
 	m.Opts = &ebiten.DrawImageOptions{}
 
 	m.NextMissle = geo.RandNum(1, 10)
+}
+
+func (m *Missiles) resetLevel(level int) {
 	m.TimeToMissle = time.Duration(m.NextMissle()) * time.Second
 
 	for i := range m.Missiles {

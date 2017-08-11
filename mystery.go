@@ -29,6 +29,9 @@ func (m *Mystery) init() {
 	m.Opts.ColorM.Scale(1.0, 0.0, 0.0, 1.0)
 	size := geo.VecXYi(m.Img.Size())
 	m.Rect = geo.RectWH(size.XY())
+}
+
+func (m *Mystery) resetLevel(level int) {
 	m.hide()
 	m.nextGoTime = 5 * time.Second
 }

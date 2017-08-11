@@ -50,7 +50,7 @@ func update(screen *ebiten.Image) error {
 	lastUpdate = now
 
 	if ebiten.IsKeyPressed(ebiten.KeyR) {
-		reset()
+		resetLevel(0)
 	}
 
 	togglFullscreen()
@@ -98,7 +98,21 @@ func drawFloor(dst *ebiten.Image) {
 	dst.DrawImage(floor, &opts)
 }
 
-func reset() {
+func resetLevel(level int) {
+	player.resetLevel(level)
+	playerBullet.resetLevel(level)
+	mystery.resetLevel(level)
+	aliens.resetLevel(level)
+	missiles.resetLevel(level)
+
+	for i := 0; i < len(shelters); i++ {
+		shelters[i].resetLevel(level)
+	}
+}
+
+func init() {
+	lastUpdate = time.Now()
+
 	player.init()
 	playerBullet.init()
 	mystery.init()
@@ -111,8 +125,7 @@ func reset() {
 }
 
 func main() {
-	lastUpdate = time.Now()
-	reset()
+	resetLevel(0)
 
 	floor, _ = ebiten.NewImage(Width, 2, ebiten.FilterNearest)
 	floor.Fill(color.NRGBA{0x00, 0xff, 0x00, 0xff})

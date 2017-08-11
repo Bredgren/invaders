@@ -34,7 +34,9 @@ func (s *Shelter) init(num int) {
 
 	s.Rect = geo.RectWH(ShelterW, ShelterH)
 	s.Rect.SetBottomMid(ShelterX[num]*Width, ShelterBottomY)
+}
 
+func (s *Shelter) resetLevel(level int) {
 	s.subRects = shelterPix(s.Rect)
 }
 

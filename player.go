@@ -32,6 +32,10 @@ func (p *Player) init() {
 	p.Opts.ColorM.Scale(0.0, 1.0, 0.0, 1.0)
 	size := geo.VecXYi(p.Img.Size())
 	p.Rect = geo.RectWH(size.XY())
+}
+
+func (p *Player) resetLevel(level int) {
+	size := geo.VecXYi(p.Img.Size())
 	yOffset := (size.Y + 10) * 2 // enough room for 2 player imgs + padding
 	p.Rect.SetMid(Width*ShelterX[0], Height-yOffset)
 	// The player image doesn't display quite right initially unless left edge is integer aligned
@@ -72,6 +76,9 @@ func (b *PlayerBullet) init() {
 	b.Img.Fill(color.White)
 	b.Rect.SetSize(w, h)
 	b.Speed = PlayerBulletSpeed
+}
+
+func (b *PlayerBullet) resetLevel(level int) {
 	b.hide()
 }
 
