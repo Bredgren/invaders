@@ -65,6 +65,7 @@ func update(screen *ebiten.Image) error {
 	player.update(dt)
 	playerBullet.update(dt)
 	aliens.update(dt)
+	missiles.update(dt)
 
 	// Check collisons
 	mystery.collidePlayerBullet(&playerBullet)
@@ -81,6 +82,7 @@ func update(screen *ebiten.Image) error {
 	player.draw(screen)
 	aliens.draw(screen)
 	playerBullet.draw(screen)
+	missiles.draw(screen)
 
 	drawFloor(screen)
 
@@ -101,6 +103,7 @@ func reset() {
 	playerBullet.init()
 	mystery.init()
 	aliens.init()
+	missiles.init()
 
 	for i := 0; i < len(shelters); i++ {
 		shelters[i].init(i)

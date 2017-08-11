@@ -77,6 +77,18 @@ func alienKindForRow(row int) int {
 	return 0
 }
 
+func (a *Aliens) activeAliens() []*Alien {
+	active := make([]*Alien, 0, len(a.Aliens))
+	for i := range a.Aliens {
+		alien := &a.Aliens[i]
+		if alien.kind < 0 {
+			continue
+		}
+		active = append(active, alien)
+	}
+	return active
+}
+
 func (a *Aliens) update(dt time.Duration) {
 	a.counter += dt.Seconds() * tempo
 
