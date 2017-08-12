@@ -3,7 +3,6 @@ package main
 import (
 	"image/color"
 	"math/rand"
-	"sort"
 
 	"github.com/Bredgren/geo"
 	"github.com/hajimehoshi/ebiten"
@@ -15,16 +14,23 @@ const (
 	ShelterH       = 15
 )
 
+const (
+	unused   = 0
+	inactive = 1
+	active   = 2
+)
+
 var (
 	shelters = [4]Shelter{}
 	ShelterX = [4]float64{0.2, 0.4, 0.6, 0.8}
 )
 
 type Shelter struct {
-	Rect     geo.Rect
-	subRects []geo.Rect
-	Img      *ebiten.Image
-	Opts     *ebiten.DrawImageOptions
+	Rect      geo.Rect
+	subRects  [ShelterW * ShelterH]geo.Rect
+	subStates [ShelterW * ShelterH]int
+	Img       *ebiten.Image
+	Opts      *ebiten.DrawImageOptions
 }
 
 func (s *Shelter) init(num int) {
@@ -34,14 +40,15 @@ func (s *Shelter) init(num int) {
 
 	s.Rect = geo.RectWH(ShelterW, ShelterH)
 	s.Rect.SetBottomMid(ShelterX[num]*Width, ShelterBottomY)
+
+	s.initSubRects()
 }
 
 func (s *Shelter) resetLevel(level int) {
-	s.subRects = shelterPix(s.Rect)
+
 }
 
-func shelterPix(r geo.Rect) []geo.Rect {
-	res := make([]geo.Rect, 0, ShelterW*ShelterH)
+func (s *Shelter) initSubRects() {
 	for y := 0; y < ShelterH; y++ {
 		for x := 0; x < ShelterW; x++ {
 			if (y == 0 && (x < 4 || x > 15)) ||
@@ -53,14 +60,18 @@ func shelterPix(r geo.Rect) []geo.Rect {
 				y == 14 && (x > 4 && x < 15) {
 				continue
 			}
-			res = append(res, geo.RectXYWH(r.X+float64(x), r.Y+float64(y), 1, 1))
+			i := y*ShelterW + x
+			s.subRects[i] = geo.RectXYWH(s.Rect.X+float64(x), s.Rect.Y+float64(y), 1, 1)
+			s.subStates[i] = active
 		}
 	}
-	return res
 }
 
 func (s *Shelter) draw(dst *ebiten.Image) {
-	for _, subRect := range s.subRects {
+	for i, subRect := range s.subRects {
+		if s.subStates[i] != active {
+			continue
+		}
 		s.Opts.GeoM.Reset()
 		s.Opts.GeoM.Translate(subRect.TopLeft())
 		dst.DrawImage(s.Img, s.Opts)
@@ -72,29 +83,38 @@ func (s *Shelter) collidePlayerBullet(b *PlayerBullet) {
 		return
 	}
 
-	if _, collide := b.Rect.CollideRectList(s.subRects); !collide {
+	activeRects := make([]geo.Rect, 0, len(s.subRects))
+	for i := range s.subStates {
+		if s.subStates[i] == active {
+			activeRects = append(activeRects, s.subRects[i])
+		}
+	}
+
+	if _, collide := b.Rect.CollideRectList(activeRects); !collide {
 		return
 	}
 
 	explosionArea := geo.CircleXYR(b.Rect.MidX(), b.Rect.MidY(), 3)
 
-	hit := explosionArea.CollideRectListAll(s.subRects)
-	// Remove 5/8 of the rects in the explosion radius
-	countToRemove := len(hit) * 5 / 8
-	if countToRemove < 2 {
-		countToRemove = len(hit)
-	}
-	// "shuffle" the hit slice and pull out countToRemove indices from it
-	order := rand.Perm(len(hit))
-	toRemove := make([]int, countToRemove)
-	for i := 0; i < countToRemove; i++ {
-		toRemove[i] = hit[order[i]]
+	hit := explosionArea.CollideRectListAll(s.subRects[:])
+	activeHits := make([]int, 0, len(hit))
+	for _, i := range hit {
+		if s.subStates[i] == active {
+			activeHits = append(activeHits, i)
+		}
 	}
 
-	// Remove the items from s.subRects, backwards so that the indicies are correct
-	sort.Sort(sort.Reverse(sort.IntSlice(toRemove)))
-	for _, iToRemove := range toRemove {
-		s.subRects = append(s.subRects[:iToRemove], s.subRects[iToRemove+1:]...)
+	// Remove 5/8 of the rects in the explosion radius
+	countToRemove := len(activeHits) * 5 / 8
+	if countToRemove < 2 {
+		countToRemove = len(activeHits)
+	}
+
+	// "shuffle" the activeHits slice and pull out countToRemove indices from it
+	order := rand.Perm(len(activeHits))
+	for i := 0; i < countToRemove; i++ {
+		iToRemove := activeHits[order[i]]
+		s.subStates[iToRemove] = inactive
 	}
 
 	b.hitSomething()

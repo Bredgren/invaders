@@ -69,14 +69,14 @@ func update(screen *ebiten.Image) error {
 
 	// Check collisons
 	mystery.collidePlayerBullet(&playerBullet)
-	for _, shelter := range shelters {
-		shelter.collidePlayerBullet(&playerBullet)
+	for i := range shelters {
+		shelters[i].collidePlayerBullet(&playerBullet)
 	}
 	aliens.collidePlayerBullet(&playerBullet)
 
 	// Draw
-	for _, shelter := range shelters {
-		shelter.draw(screen)
+	for i := range shelters {
+		shelters[i].draw(screen)
 	}
 	mystery.draw(screen)
 	player.draw(screen)
@@ -105,7 +105,7 @@ func resetLevel(level int) {
 	aliens.resetLevel(level)
 	missiles.resetLevel(level)
 
-	for i := 0; i < len(shelters); i++ {
+	for i := range shelters {
 		shelters[i].resetLevel(level)
 	}
 }
@@ -119,7 +119,7 @@ func init() {
 	aliens.init()
 	missiles.init()
 
-	for i := 0; i < len(shelters); i++ {
+	for i := range shelters {
 		shelters[i].init(i)
 	}
 }
