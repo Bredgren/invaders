@@ -33,7 +33,6 @@ func (p *Player) init() {
 	size := geo.VecXYi(p.Img.Size())
 	p.Rect = geo.RectWH(size.XY())
 	p.respawn()
-
 }
 
 func (p *Player) respawn() {

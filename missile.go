@@ -26,6 +26,10 @@ func (m *Missiles) init() {
 	m.MissileImg = openImg("img/missile.png")
 	m.Opts = &ebiten.DrawImageOptions{}
 
+	for i := range m.Missiles {
+		m.Missiles[i].SetSize(toFloat(m.MissileImg.Size()))
+	}
+
 	m.NextMissle = geo.RandNum(1, 10)
 }
 
@@ -33,8 +37,7 @@ func (m *Missiles) resetLevel(level int) {
 	m.TimeToMissle = time.Duration(m.NextMissle()) * time.Second
 
 	for i := range m.Missiles {
-		r := &m.Missiles[i]
-		r.SetTop(-100) // arbitratraily off screen
+		m.hitSomething(i)
 	}
 }
 
@@ -65,7 +68,7 @@ func (m *Missiles) update(dt time.Duration) {
 		r.Move(0, missileSpeed*dt.Seconds())
 
 		if r.Top() > Width {
-			r.SetTop(-100) // arbitratraily off screen
+			m.hitSomething(i)
 		}
 	}
 }
@@ -80,4 +83,8 @@ func (m *Missiles) draw(dst *ebiten.Image) {
 		m.Opts.GeoM.Translate(r.TopLeft())
 		dst.DrawImage(m.MissileImg, m.Opts)
 	}
+}
+
+func (m *Missiles) hitSomething(missile int) {
+	m.Missiles[missile].SetTop(-100) // arbitratraily off screen
 }

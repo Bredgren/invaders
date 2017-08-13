@@ -14,3 +14,7 @@ func openImg(name string) *ebiten.Image {
 	}
 	return img
 }
+
+func toFloat(a, b int) (float64, float64) {
+	return float64(a), float64(b)
+}

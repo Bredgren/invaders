@@ -40,7 +40,7 @@ var (
 func update(screen *ebiten.Image) error {
 	now := time.Now()
 	if ebiten.IsKeyPressed(ebiten.KeyZ) {
-		timeScale = 0.5
+		timeScale = 0.25
 	} else if ebiten.IsKeyPressed(ebiten.KeyX) {
 		timeScale = 2.0
 	} else {
@@ -49,7 +49,7 @@ func update(screen *ebiten.Image) error {
 	dt := time.Duration(float64(now.Sub(lastUpdate).Nanoseconds())*timeScale) * time.Nanosecond
 	lastUpdate = now
 
-	if ebiten.IsKeyPressed(ebiten.KeyR) {
+	if ebiten.IsKeyPressed(ebiten.KeyR) || len(aliens.activeAliens()) == 0 {
 		resetLevel(0)
 	}
 
@@ -73,6 +73,14 @@ func update(screen *ebiten.Image) error {
 		shelters[i].collidePlayerBullet(&playerBullet)
 	}
 	aliens.collidePlayerBullet(&playerBullet)
+	for i := range missiles.Missiles {
+		if playerBullet.isGoing() && missiles.Missiles[i].Top() > 0 {
+			if missiles.Missiles[i].CollideRect(playerBullet.Rect) {
+				playerBullet.hitSomething()
+				missiles.hitSomething(i)
+			}
+		}
+	}
 
 	// Draw
 	for i := range shelters {
