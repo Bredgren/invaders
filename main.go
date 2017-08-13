@@ -71,6 +71,7 @@ func update(screen *ebiten.Image) error {
 	mystery.collidePlayerBullet(&playerBullet)
 	for i := range shelters {
 		shelters[i].collidePlayerBullet(&playerBullet)
+		shelters[i].collideMissiles()
 	}
 	aliens.collidePlayerBullet(&playerBullet)
 	for i := range missiles.Missiles {

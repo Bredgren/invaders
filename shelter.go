@@ -94,7 +94,39 @@ func (s *Shelter) collidePlayerBullet(b *PlayerBullet) {
 		return
 	}
 
-	explosionArea := geo.CircleXYR(b.Rect.MidX(), b.Rect.MidY(), 3)
+	s.collideRect(b.Rect)
+
+	b.hitSomething()
+}
+
+func (s *Shelter) collideMissiles() {
+	for i, r := range missiles.Missiles {
+		if r.Y < 0 {
+			continue
+		}
+
+		if !s.Rect.CollideRect(r) {
+			continue
+		}
+
+		activeRects := make([]geo.Rect, 0, len(s.subRects))
+		for i := range s.subStates {
+			if s.subStates[i] == active {
+				activeRects = append(activeRects, s.subRects[i])
+			}
+		}
+		if _, collide := r.CollideRectList(activeRects); !collide {
+			continue
+		}
+
+		s.collideRect(r)
+
+		missiles.hitSomething(i)
+	}
+}
+
+func (s *Shelter) collideRect(r geo.Rect) {
+	explosionArea := geo.CircleXYR(r.MidX(), r.MidY(), 3)
 
 	hit := explosionArea.CollideRectListAll(s.subRects[:])
 	activeHits := make([]int, 0, len(hit))
@@ -116,6 +148,4 @@ func (s *Shelter) collidePlayerBullet(b *PlayerBullet) {
 		iToRemove := activeHits[order[i]]
 		s.subStates[iToRemove] = inactive
 	}
-
-	b.hitSomething()
 }
