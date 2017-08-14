@@ -82,6 +82,7 @@ func update(screen *ebiten.Image) error {
 			}
 		}
 	}
+	player.collideEnemyMissile()
 
 	// Draw
 	for i := range shelters {

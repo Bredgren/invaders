@@ -67,6 +67,19 @@ func (p *Player) draw(dst *ebiten.Image) {
 	dst.DrawImage(p.Img, p.Opts)
 }
 
+func (p *Player) collideEnemyMissile() {
+	for i, r := range missiles.Missiles {
+		if r.Y < 0 {
+			continue
+		}
+
+		if p.Rect.CollideRect(r) {
+			missiles.hitSomething(i)
+			p.respawn()
+		}
+	}
+}
+
 type PlayerBullet struct {
 	Rect  geo.Rect
 	Speed float64
