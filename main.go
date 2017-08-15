@@ -42,7 +42,7 @@ func update(screen *ebiten.Image) error {
 	if ebiten.IsKeyPressed(ebiten.KeyZ) {
 		timeScale = 0.25
 	} else if ebiten.IsKeyPressed(ebiten.KeyX) {
-		timeScale = 2.0
+		timeScale = 8.0
 	} else {
 		timeScale = 1.0
 	}
@@ -83,6 +83,7 @@ func update(screen *ebiten.Image) error {
 		}
 	}
 	player.collideEnemyMissile()
+	aliens.collideShelters()
 
 	// Draw
 	for i := range shelters {

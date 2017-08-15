@@ -100,7 +100,7 @@ func (a *Aliens) update(dt time.Duration) {
 	if tick > a.tick {
 		y := 0.0
 		if a.Bounds.Right() >= Width || a.Bounds.Left() <= 0 {
-			y = 16
+			y = 8
 			a.speed *= -1
 		}
 		for i := range a.Aliens {
@@ -182,6 +182,18 @@ func (a *Aliens) reCalcBounds() {
 			a.Bounds = alien.Rect
 		} else {
 			a.Bounds.Union(alien.Rect)
+		}
+	}
+}
+
+func (a *Aliens) collideShelters() {
+	for i := range a.Aliens {
+		alien := &a.Aliens[i]
+		if alien.kind < 0 || alien.Rect.Bottom() < ShelterBottomY-ShelterH {
+			continue
+		}
+		for i := range shelters {
+			shelters[i].clearRect(alien.Rect)
 		}
 	}
 }

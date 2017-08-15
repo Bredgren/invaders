@@ -149,3 +149,16 @@ func (s *Shelter) collideRect(r geo.Rect) {
 		s.subStates[iToRemove] = inactive
 	}
 }
+
+func (s *Shelter) clearRect(r geo.Rect) {
+	if !s.Rect.CollideRect(r) {
+		return
+	}
+
+	hit := r.CollideRectListAll(s.subRects[:])
+	for _, i := range hit {
+		if s.subStates[i] == active {
+			s.subStates[i] = inactive
+		}
+	}
+}
