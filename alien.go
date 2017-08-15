@@ -69,6 +69,8 @@ func (a *Aliens) resetLevel(level int) {
 	}
 
 	a.reCalcBounds()
+
+	tempo = 1.0
 }
 
 func alienKindForRow(row int) int {
@@ -151,9 +153,31 @@ func (a *Aliens) collidePlayerBullet(b *PlayerBullet) {
 			alien.kind = -1
 			b.hitSomething()
 			a.reCalcBounds()
+			tempo = a.getTempo()
 			break
 		}
 	}
+}
+
+func (a *Aliens) getTempo() float64 {
+	remaining := float64(a.remaining())
+	total := float64(rows * cols)
+	destroyed := total - remaining
+	switch {
+	case destroyed < total*0.2:
+		return 1.0
+	case destroyed < total*0.4:
+		return 1.5
+	case destroyed < total*0.7:
+		return 2.5
+	case destroyed < total*0.9:
+		return 5.0
+	case destroyed < total-1:
+		return 10.0
+	case destroyed < total:
+		return 30.0
+	}
+	return 1.0
 }
 
 func (a *Aliens) remaining() int {
