@@ -62,11 +62,6 @@ func update(screen *ebiten.Image) error {
 
 	togglFullscreen()
 
-	if ebiten.IsRunningSlowly() {
-		log.Println("slow")
-		return nil
-	}
-
 	// Update things
 	mystery.update(dt)
 	player.update(dt)
@@ -99,6 +94,11 @@ func update(screen *ebiten.Image) error {
 	if player.Lives <= 0 {
 		level = 0
 		resetLevel()
+		return nil
+	}
+
+	if ebiten.IsRunningSlowly() {
+		log.Println("slow")
 		return nil
 	}
 
