@@ -17,10 +17,11 @@ var (
 )
 
 type Mystery struct {
-	Rect       geo.Rect
-	Img        *ebiten.Image
-	Opts       *ebiten.DrawImageOptions
-	nextGoTime time.Duration
+	Rect        geo.Rect
+	Img         *ebiten.Image
+	Opts        *ebiten.DrawImageOptions
+	nextGoTime  time.Duration
+	getNextTime geo.NumGen
 }
 
 func (m *Mystery) init() {
@@ -29,6 +30,7 @@ func (m *Mystery) init() {
 	m.Opts.ColorM.Scale(1.0, 0.0, 0.0, 1.0)
 	size := geo.VecXYi(m.Img.Size())
 	m.Rect = geo.RectWH(size.XY())
+	m.getNextTime = geo.RandNum(20, 60)
 }
 
 func (m *Mystery) resetLevel(level int) {
@@ -40,7 +42,7 @@ func (m *Mystery) update(dt time.Duration) {
 	m.nextGoTime -= dt
 	if !m.isGoing() && m.nextGoTime < 0 {
 		m.Rect.X = Width + 50
-		m.nextGoTime = 10 * time.Second
+		m.nextGoTime = time.Duration(int(m.getNextTime())) * time.Second
 	}
 	if !m.isGoing() {
 		return
