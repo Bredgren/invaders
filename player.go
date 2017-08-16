@@ -13,6 +13,7 @@ const (
 	PlayerSpeed       = 100
 	PlayerY           = 20
 	PlayerBulletSpeed = 160
+	PlayerMaxLives    = 6
 )
 
 var (
@@ -21,9 +22,10 @@ var (
 )
 
 type Player struct {
-	Rect geo.Rect
-	Img  *ebiten.Image
-	Opts *ebiten.DrawImageOptions
+	Rect  geo.Rect
+	Img   *ebiten.Image
+	Opts  *ebiten.DrawImageOptions
+	Lives int
 }
 
 func (p *Player) init() {
@@ -44,7 +46,9 @@ func (p *Player) respawn() {
 }
 
 func (p *Player) resetLevel(level int) {
-
+	if level == 0 {
+		p.Lives = 3
+	}
 }
 
 func (p *Player) update(dt time.Duration) {
@@ -75,6 +79,7 @@ func (p *Player) collideEnemyMissile() {
 
 		if p.Rect.CollideRect(r) {
 			missiles.hitSomething(i)
+			p.Lives -= 1
 			p.respawn()
 		}
 	}

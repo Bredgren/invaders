@@ -57,7 +57,7 @@ func update(screen *ebiten.Image) error {
 
 	if ebiten.IsKeyPressed(ebiten.KeyR) || len(aliens.activeAliens()) == 0 {
 		level += 1
-		resetLevel(level)
+		resetLevel()
 	}
 
 	togglFullscreen()
@@ -96,6 +96,12 @@ func update(screen *ebiten.Image) error {
 		highscore = score
 	}
 
+	if player.Lives <= 0 {
+		level = 0
+		resetLevel()
+		return nil
+	}
+
 	// Draw
 	for i := range shelters {
 		shelters[i].draw(screen)
@@ -107,6 +113,8 @@ func update(screen *ebiten.Image) error {
 	missiles.draw(screen)
 
 	drawFloor(screen)
+
+	drawPlayerLives(screen)
 
 	// ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %0.2f\nTime: %0.2f",
 	// 	ebiten.CurrentFPS(), timeScale))
@@ -124,7 +132,19 @@ func drawFloor(dst *ebiten.Image) {
 	dst.DrawImage(floor, &opts)
 }
 
-func resetLevel(level int) {
+func drawPlayerLives(dst *ebiten.Image) {
+	opts := ebiten.DrawImageOptions{}
+	opts.ColorM.Scale(0.0, 1.0, 0.0, 1.0)
+	w, h := player.Rect.Size()
+	padding := 6.0
+	opts.GeoM.Translate(Width, Height-h-padding)
+	for i := 0; i < player.Lives; i++ {
+		opts.GeoM.Translate(-w-padding, 0)
+		dst.DrawImage(player.Img, &opts)
+	}
+}
+
+func resetLevel() {
 	if level == 0 {
 		score = 0
 	}
@@ -155,7 +175,7 @@ func init() {
 }
 
 func main() {
-	resetLevel(0)
+	resetLevel()
 
 	floor, _ = ebiten.NewImage(Width, 2, ebiten.FilterNearest)
 	floor.Fill(color.NRGBA{0x00, 0xff, 0x00, 0xff})

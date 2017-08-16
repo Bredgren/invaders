@@ -40,12 +40,12 @@ func (s *Shelter) init(num int) {
 
 	s.Rect = geo.RectWH(ShelterW, ShelterH)
 	s.Rect.SetBottomMid(ShelterX[num]*Width, ShelterBottomY)
-
-	s.initSubRects()
 }
 
 func (s *Shelter) resetLevel(level int) {
-
+	if level == 0 {
+		s.initSubRects()
+	}
 }
 
 func (s *Shelter) initSubRects() {
