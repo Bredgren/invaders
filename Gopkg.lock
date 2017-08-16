@@ -17,7 +17,7 @@
   branch = "master"
   name = "github.com/go-gl/glfw"
   packages = ["v3.2/glfw"]
-  revision = "222b83c41c19cc975bfbf6f2611f3a97bde91a56"
+  revision = "513e4f2bf85c31fba0fc4907abd7895242ccbe50"
 
 [[projects]]
   branch = "master"
@@ -35,7 +35,13 @@
   branch = "master"
   name = "github.com/hajimehoshi/ebiten"
   packages = [".","ebitenutil","ebitenutil/internal/assets","internal","internal/affine","internal/clock","internal/endian","internal/graphics","internal/jni","internal/math","internal/opengl","internal/restorable","internal/sync","internal/ui","internal/web"]
-  revision = "5f538bff8285ce66428140d9c3e09af54c9d0064"
+  revision = "4fc4b74ccabaf95d8562c733fac8ead748c4ade7"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/image"
+  packages = ["font","math/fixed"]
+  revision = "426cfd8eeb6e08ab1932954e09e3c2cb2bc6e36d"
 
 [[projects]]
   branch = "master"
@@ -47,11 +53,11 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["windows"]
-  revision = "e42485b6e20ae7d2304ec72e535b103ed350cc02"
+  revision = "9f7170bcd8e9f4d3691c06401119c46a769a1e03"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f95eb02c9ca1c9852761630a13b2aa823d4b6340b41414d15eba35d9f52ed933"
+  inputs-digest = "faac3fca3b972f3cc7051ea2528dabd0de0b1159a6f3e26f6ef4c9f70c92955c"
   solver-name = "gps-cdcl"
   solver-version = 1

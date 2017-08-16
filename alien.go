@@ -150,6 +150,7 @@ func (a *Aliens) collidePlayerBullet(b *PlayerBullet) {
 			continue
 		}
 		if alien.Rect.CollideRect(b.Rect) {
+			score += (alien.kind + 1) * 10
 			alien.kind = -1
 			b.hitSomething()
 			a.reCalcBounds()

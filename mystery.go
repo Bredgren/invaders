@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math/rand"
 	"time"
 
 	"github.com/Bredgren/geo"
@@ -13,7 +14,8 @@ const (
 )
 
 var (
-	mystery Mystery
+	mystery       Mystery
+	MysteryPoints = [...]int{50, 100, 150, 300}
 )
 
 type Mystery struct {
@@ -65,6 +67,7 @@ func (m *Mystery) collidePlayerBullet(b *PlayerBullet) {
 	m.hide()
 	b.hitSomething()
 	m.nextGoTime = 5 * time.Second
+	score += MysteryPoints[rand.Intn(len(MysteryPoints))]
 }
 
 func (m *Mystery) isGoing() bool {

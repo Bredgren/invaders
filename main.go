@@ -7,8 +7,10 @@ import (
 	"log"
 	"time"
 
+	"golang.org/x/image/font/basicfont"
+
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/ebitenutil"
+	"github.com/hajimehoshi/ebiten/text"
 )
 
 const (
@@ -20,6 +22,9 @@ var (
 	timeScale           = 1.0
 	canChangeFullscreen = true
 	floor               *ebiten.Image
+	fontFace            = basicfont.Face7x13
+	score               = 0
+	highscore           = 0
 )
 
 func togglFullscreen() {
@@ -85,6 +90,10 @@ func update(screen *ebiten.Image) error {
 	player.collideEnemyMissile()
 	aliens.collideShelters()
 
+	if score > highscore {
+		highscore = score
+	}
+
 	// Draw
 	for i := range shelters {
 		shelters[i].draw(screen)
@@ -97,8 +106,11 @@ func update(screen *ebiten.Image) error {
 
 	drawFloor(screen)
 
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %0.2f\nTime: %0.2f",
-		ebiten.CurrentFPS(), timeScale))
+	// ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %0.2f\nTime: %0.2f",
+	// 	ebiten.CurrentFPS(), timeScale))
+
+	text.Draw(screen, fmt.Sprintf("%d", highscore), fontFace, 5, 15, color.White)
+	text.Draw(screen, fmt.Sprintf("%d", score), fontFace, 5, 30, color.White)
 
 	return nil
 }
@@ -110,6 +122,10 @@ func drawFloor(dst *ebiten.Image) {
 }
 
 func resetLevel(level int) {
+	if level == 0 {
+		score = 0
+	}
+
 	player.resetLevel(level)
 	playerBullet.resetLevel(level)
 	mystery.resetLevel(level)
