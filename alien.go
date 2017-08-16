@@ -25,13 +25,14 @@ type Alien struct {
 }
 
 type Aliens struct {
-	Bounds   geo.Rect
-	AlienImg [3][2]*ebiten.Image
-	Opts     *ebiten.DrawImageOptions
-	Aliens   [rows * cols]Alien
-	counter  float64
-	tick     int
-	speed    float64
+	Bounds     geo.Rect
+	AlienImg   [3][2]*ebiten.Image
+	Opts       *ebiten.DrawImageOptions
+	Aliens     [rows * cols]Alien
+	counter    float64
+	tick       int
+	speed      float64
+	extraTempo float64
 }
 
 func (a *Aliens) init() {
@@ -45,9 +46,12 @@ func (a *Aliens) init() {
 }
 
 func (a *Aliens) resetLevel(level int) {
+	startY := 64 + float64(8*(level%6))
+	a.extraTempo = float64(level/6) * 0.1
+
 	a.speed = 2
 
-	a.Bounds = geo.RectXYWH(40, 64, 0, 0)
+	a.Bounds = geo.RectXYWH(40, startY, 0, 0)
 
 	xSpacing, ySpacing := 16.0, 16.0
 	x, y := a.Bounds.TopLeft()
@@ -164,21 +168,22 @@ func (a *Aliens) getTempo() float64 {
 	remaining := float64(a.remaining())
 	total := float64(rows * cols)
 	destroyed := total - remaining
+	tempo := 1.0
 	switch {
 	case destroyed < total*0.2:
-		return 1.0
+		tempo = 1.0
 	case destroyed < total*0.4:
-		return 1.5
+		tempo = 1.5
 	case destroyed < total*0.7:
-		return 2.5
+		tempo = 2.5
 	case destroyed < total*0.9:
-		return 5.0
+		tempo = 5.0
 	case destroyed < total-1:
-		return 10.0
+		tempo = 10.0
 	case destroyed < total:
-		return 30.0
+		tempo = 30.0
 	}
-	return 1.0
+	return tempo + a.extraTempo
 }
 
 func (a *Aliens) remaining() int {
