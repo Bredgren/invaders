@@ -25,6 +25,7 @@ var (
 	fontFace            = basicfont.Face7x13
 	score               = 0
 	highscore           = 0
+	level               = 0
 )
 
 func togglFullscreen() {
@@ -55,7 +56,8 @@ func update(screen *ebiten.Image) error {
 	lastUpdate = now
 
 	if ebiten.IsKeyPressed(ebiten.KeyR) || len(aliens.activeAliens()) == 0 {
-		resetLevel(0)
+		level += 1
+		resetLevel(level)
 	}
 
 	togglFullscreen()
@@ -109,8 +111,9 @@ func update(screen *ebiten.Image) error {
 	// ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %0.2f\nTime: %0.2f",
 	// 	ebiten.CurrentFPS(), timeScale))
 
-	text.Draw(screen, fmt.Sprintf("%d", highscore), fontFace, 5, 15, color.White)
-	text.Draw(screen, fmt.Sprintf("%d", score), fontFace, 5, 30, color.White)
+	text.Draw(screen, fmt.Sprintf("High Score %d", highscore), fontFace, 5, 15, color.White)
+	text.Draw(screen, fmt.Sprintf("Score %d", score), fontFace, 5, 30, color.White)
+	text.Draw(screen, fmt.Sprintf("Level %d", level), fontFace, 5, Height-5, color.White)
 
 	return nil
 }
