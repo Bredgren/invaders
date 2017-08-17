@@ -46,17 +46,17 @@ var (
 
 func update(screen *ebiten.Image) error {
 	now := time.Now()
-	if ebiten.IsKeyPressed(ebiten.KeyZ) {
-		timeScale = 0.25
-	} else if ebiten.IsKeyPressed(ebiten.KeyX) {
-		timeScale = 8.0
-	} else {
-		timeScale = 1.0
-	}
+	// if ebiten.IsKeyPressed(ebiten.KeyZ) {
+	// 	timeScale = 0.25
+	// } else if ebiten.IsKeyPressed(ebiten.KeyX) {
+	// 	timeScale = 8.0
+	// } else {
+	// 	timeScale = 1.0
+	// }
 	dt := time.Duration(float64(now.Sub(lastUpdate).Nanoseconds())*timeScale) * time.Nanosecond
 	lastUpdate = now
 
-	if ebiten.IsKeyPressed(ebiten.KeyR) || len(aliens.activeAliens()) == 0 {
+	if /*ebiten.IsKeyPressed(ebiten.KeyR) ||*/ len(aliens.activeAliens()) == 0 {
 		level += 1
 		resetLevel()
 	}
