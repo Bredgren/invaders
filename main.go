@@ -26,6 +26,7 @@ var (
 	score               = 0
 	highscore           = 0
 	level               = 0
+	nextLife            = 2000
 )
 
 func togglFullscreen() {
@@ -97,6 +98,15 @@ func update(screen *ebiten.Image) error {
 		return nil
 	}
 
+	// If we happen to gain an extra life in the same frame that we lose our last one,
+	// just end the game to avoid confusion.
+	if score >= nextLife {
+		nextLife *= 2
+		if player.Lives < PlayerMaxLives {
+			player.Lives += 1
+		}
+	}
+
 	if ebiten.IsRunningSlowly() {
 		log.Println("slow")
 		return nil
@@ -147,6 +157,7 @@ func drawPlayerLives(dst *ebiten.Image) {
 func resetLevel() {
 	if level == 0 {
 		score = 0
+		nextLife = 2000
 	}
 
 	player.resetLevel(level)
