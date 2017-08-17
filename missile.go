@@ -50,7 +50,16 @@ func (m *Missiles) update(dt time.Duration) {
 			r := &m.Missiles[i]
 			if r.Y < 0 { // on screen is considered active, don't use it then
 				aliens := aliens.activeAliens()
-				i := rand.Intn(len(aliens))
+				abovePlayer := make([]*Alien, 0, len(aliens))
+				for i := range aliens {
+					if aliens[i].Rect.Bottom() < player.Rect.Top()-8 { // 8 is just a bit of buffer
+						abovePlayer = append(abovePlayer, aliens[i])
+					}
+				}
+				if len(abovePlayer) == 0 {
+					break // No aliens available to shoot
+				}
+				i := rand.Intn(len(abovePlayer))
 				a := aliens[i]
 				r.SetTopMid(a.Rect.BottomMid())
 				// Align to avoid visual artifacts
