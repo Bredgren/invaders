@@ -227,3 +227,15 @@ func (a *Aliens) collideShelters() {
 		}
 	}
 }
+
+func (a *Aliens) collidePlayer() {
+	for i := range a.Aliens {
+		alien := &a.Aliens[i]
+		if alien.kind < 0 || alien.Rect.Bottom() < PlayerY {
+			continue
+		}
+		if player.Rect.CollideRect(alien.Rect) {
+			player.Lives = 0
+		}
+	}
+}

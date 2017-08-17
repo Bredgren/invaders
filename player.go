@@ -34,7 +34,6 @@ func (p *Player) init() {
 	p.Opts.ColorM.Scale(0.0, 1.0, 0.0, 1.0)
 	size := geo.VecXYi(p.Img.Size())
 	p.Rect = geo.RectWH(size.XY())
-	p.respawn()
 }
 
 func (p *Player) respawn() {
@@ -48,6 +47,7 @@ func (p *Player) respawn() {
 func (p *Player) resetLevel(level int) {
 	if level == 0 {
 		p.Lives = 3
+		p.respawn()
 	}
 }
 

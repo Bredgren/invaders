@@ -87,6 +87,7 @@ func update(screen *ebiten.Image) error {
 	}
 	player.collideEnemyMissile()
 	aliens.collideShelters()
+	aliens.collidePlayer()
 
 	if score > highscore {
 		highscore = score
