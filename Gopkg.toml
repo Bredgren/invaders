@@ -1,9 +1,11 @@
 [[constraint]]
 	name = "github.com/hajimehoshi/ebiten"
 	# version = "^1.5.1"
-	branch = "master"
+	# branch = "master"
+	revision = "27365161f0bad0a82299e504602bd6d374a5c666"
 
 [[constraint]]
 	name = "github.com/Bredgren/geo"
 	# version = "*"
-	branch = "master"
+	# branch = "master"
+	revision = "9465f8c7efa187a8c1ed7390cadfb59564271860"

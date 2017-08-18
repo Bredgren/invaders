@@ -2,7 +2,6 @@
 
 
 [[projects]]
-  branch = "master"
   name = "github.com/Bredgren/geo"
   packages = ["."]
   revision = "9465f8c7efa187a8c1ed7390cadfb59564271860"
@@ -32,15 +31,14 @@
   revision = "a2d36020a9b2af0f7aefb23467ab48f3b501beec"
 
 [[projects]]
-  branch = "master"
   name = "github.com/hajimehoshi/ebiten"
-  packages = [".","ebitenutil","ebitenutil/internal/assets","internal","internal/affine","internal/clock","internal/endian","internal/graphics","internal/jni","internal/math","internal/opengl","internal/restorable","internal/sync","internal/ui","internal/web"]
-  revision = "4fc4b74ccabaf95d8562c733fac8ead748c4ade7"
+  packages = [".","ebitenutil","ebitenutil/internal/assets","internal","internal/affine","internal/clock","internal/endian","internal/graphics","internal/jni","internal/math","internal/opengl","internal/restorable","internal/sync","internal/ui","internal/web","text"]
+  revision = "27365161f0bad0a82299e504602bd6d374a5c666"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/image"
-  packages = ["font","math/fixed"]
+  packages = ["font","font/basicfont","font/plan9font","math/fixed"]
   revision = "426cfd8eeb6e08ab1932954e09e3c2cb2bc6e36d"
 
 [[projects]]
@@ -53,11 +51,11 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["windows"]
-  revision = "9f7170bcd8e9f4d3691c06401119c46a769a1e03"
+  revision = "43e60d72a8e2bd92ee98319ba9a384a0e9837c08"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "faac3fca3b972f3cc7051ea2528dabd0de0b1159a6f3e26f6ef4c9f70c92955c"
+  inputs-digest = "6f71263fccd6dd4686f64c9d8e97d94cccb9a6e1c382ad1937af2712bcef08fe"
   solver-name = "gps-cdcl"
   solver-version = 1
