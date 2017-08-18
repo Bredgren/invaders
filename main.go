@@ -109,7 +109,7 @@ func update(screen *ebiten.Image) error {
 	}
 
 	if ebiten.IsRunningSlowly() {
-		log.Println("slow")
+		// log.Println("slow")
 		return nil
 	}
 
